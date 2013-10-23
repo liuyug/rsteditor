@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import wx.html
 import wx.lib.newevent
 from rsteditor import HtmlViewer
 
@@ -16,5 +17,13 @@ class WebViewer(HtmlViewer):
         dx = event.dx
         dy = event.dy
         delay = event.delay
-        self.ScrollWindow(dx, dy, delay)
+        if isinstance(self, wx.html.HtmlWindow):
+            super(WebViewer, self).Scroll(dx, dy)
+        else:
+            super(WebViewer, self).ScrollWindow(dx, dy, delay)
 
+    def SetPage(self, html, url=None):
+        if isinstance(self, wx.html.HtmlWindow):
+            super(WebViewer, self).SetPage(html)
+        else:
+            super(WebViewer, self).SetPage(html, url)

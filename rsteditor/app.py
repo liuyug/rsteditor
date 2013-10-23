@@ -371,25 +371,24 @@ class RSTEditorFrame(wx.Frame):
     def OnScrollWin(self, event):
         if config.getboolean('preview', 'synchronize'):
             dy = event.pos
-            range = self.editor.GetScrollRange(wx.VERTICAL)
-            hx, hy = self.htmlviewer.GetViewRange()
-            unit = hy / range
+            editor_range = self.editor.GetScrollRange(wx.VERTICAL)
+            htmlviewer_range = self.htmlviewer.GetScrollRange(wx.VERTICAL)
+            unit = htmlviewer_range / editor_range
             delay = False
             evt = htmlviewer.ReqScrollEvent(dx=0, dy=dy*unit, delay=delay, id=self.htmlviewer.GetId())
             wx.PostEvent(self.htmlviewer, evt)
 
     def PreviewRST(self, text, type='.rst', delay=False):
-        dx = self.editor.GetScrollPos(wx.HORIZONTAL)
         dy = self.editor.GetScrollPos(wx.VERTICAL)
-        range = self.editor.GetScrollRange(wx.VERTICAL)
-        hx, hy = self.htmlviewer.GetViewRange()
-        unit = hy / range
+        editor_range = self.editor.GetScrollRange(wx.VERTICAL)
+        htmlviewer_range = self.htmlviewer.GetScrollRange(wx.VERTICAL)
+        unit = htmlviewer_range / editor_range
         if type in ['.rst', '.rest']:
             html = rst2html(text)
             url = 'file:///%s'% self.filename
             self.codeviewer.SetValue(html)
             self.htmlviewer.SetPage(html, url)
-            evt = htmlviewer.ReqScrollEvent(dx=dx*unit, dy=dy*unit, delay=delay, id=self.htmlviewer.GetId())
+            evt = htmlviewer.ReqScrollEvent(dx=0, dy=dy*unit, delay=delay, id=self.htmlviewer.GetId())
             wx.PostEvent(self.htmlviewer, evt)
         else:
             self.htmlviewer.SetPage('')

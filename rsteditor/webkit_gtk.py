@@ -94,10 +94,7 @@ class WKHtmlWindow(wx.Window):
     def StopLoading(self):
         self.ctrl.stop_loading()
 
-    def SetPage(self, html, url=None):
-        """ for pywebkitgtk """
-        if not url:
-            url = ''
+    def SetPage(self, html, url):
         self.ctrl.load_string(html, 'text/html', 'utf-8', url)
 
     def DoScrollWindow(self, dx, dy):
@@ -115,12 +112,15 @@ class WKHtmlWindow(wx.Window):
         dy = self.vadj.get_value()
         return (dx, dy)
 
-    def GetViewRange(self):
-        dx = self.hadj.get_upper()
-        dy = self.vadj.get_upper()
-        return (dx, dy)
+    def GetScrollRange(self, orientation):
+        if orientation == wx.VERTICAL:
+            range = self.vadj.get_upper()
+        elif orientation == wx.HORIZONTAL:
+            range = self.hadj.get_upper()
+        return range
 
     def DelayScrollWindow(self, dx, dy):
+        """ scroll after load page finished """
         self.delay_do_scroll = True
         self.dx = dx
         self.dy = dy
