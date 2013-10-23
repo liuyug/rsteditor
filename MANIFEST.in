@@ -1,0 +1,6 @@
+include *.rst
+include *.in
+include *.py
+include config/styles.ini
+recursive-include test
+
