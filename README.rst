@@ -9,6 +9,11 @@ For all platform:
 
 + docutils
 + wxPython
++ Pygments
+
+For Window:
+
++ comtypes
 
 For Linux:
 

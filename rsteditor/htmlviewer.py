@@ -19,11 +19,15 @@ class WebViewer(HtmlViewer):
         delay = event.delay
         if isinstance(self, wx.html.HtmlWindow):
             super(WebViewer, self).Scroll(dx, dy)
+        elif isinstance(self, wx.lib.iewin.IEHtmlWindow):
+            super(WebViewer, self).ScrollWindow(dx, dy)
         else:
             super(WebViewer, self).ScrollWindow(dx, dy, delay)
 
     def SetPage(self, html, url=None):
         if isinstance(self, wx.html.HtmlWindow):
             super(WebViewer, self).SetPage(html)
+        elif isinstance(self, wx.lib.iewin.IEHtmlWindow):
+            super(WebViewer, self).LoadString(html)
         else:
             super(WebViewer, self).SetPage(html, url)

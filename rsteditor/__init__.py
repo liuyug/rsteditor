@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding:utf-8 -*-
 
+import sys
 import os.path
 
 import wx
@@ -11,7 +12,7 @@ APPNAME = 'RSTEditor'
 VERSION = '1.0.0a'
 AUTHORS =['Yugang LIU',]
 
-HOME_PATH = os.path.join(os.environ['HOME'])
+HOME_PATH = os.path.expanduser('~')
 BASE_PATH = os.path.join(HOME_PATH, '.config', APPNAME.lower())
 CONFIG_PATH = os.path.join(BASE_PATH, 'config')
 TEMPLATE_PATH = os.path.join(BASE_PATH, 'template')
@@ -27,14 +28,16 @@ ALLOWED_LOADS = ['.rst', '.rest',
         '.sh',
         '.py']
 
-DATA_PATH = ''
+DATA_PATH = os.path.join('%s/share/%s'% (sys.prefix, APPNAME.lower()))
 
-if wx.Platform == '__WXGTK__':
-    from rsteditor.webkit_gtk import WKHtmlWindow as HtmlViewer
-    DATA_PATH = os.path.join('/usr/share/%s'% APPNAME.lower())
-elif wx.Platform == '__WXMSW__':
-    DATA_PATH = ''
-else:
+try:
+    if wx.Platform == '__WXGTK__':
+        from rsteditor.webkit_gtk import WKHtmlWindow as HtmlViewer
+    elif wx.Platform == '__WXMSW__':
+        from wx.lib.iewin import IEHtmlWindow as HtmlViewer
+    elif wx.Platform == '__WXMAC__':
+        from wx.webkit import WebKitCtrl as HtmlViewer
+except:
     from wx.html import HtmlWindow as HtmlViewer
 
 try:

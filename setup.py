@@ -40,7 +40,7 @@ setup(name=APPNAME.lower(),
           ('share/%s/config'% APPNAME.lower(), ['config/styles.ini']),
           ],
       scripts=['rsteditor.py'],
-      requires=['docutils', 'wxPython', 'pygtk', 'pywebkitgtk'],
+      requires=['docutils', 'pygments', 'wxPython'],
       cmdclass = {"install_scripts": my_install},
       )
 

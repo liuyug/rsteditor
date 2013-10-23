@@ -33,6 +33,7 @@ class ExplorerWindow(wx.TreeCtrl):
         self.Bind(wx.EVT_TREE_ITEM_COLLAPSING, self.OnItemCollapsing)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_RIGHT_UP, self.OnRightUp)
+        #self.Bind(wx.EVT_TREE_ITEM_MENU, self.OnRightUp)
         self.Bind(EVT_SET_ROOT, self.OnSetRoot)
         self.rootdir = ''
         # popup menu
@@ -54,7 +55,7 @@ class ExplorerWindow(wx.TreeCtrl):
         self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=ID_REFRESH)
 
     def OnItemCollapsing(self, event):
-        event.Vote()
+        event.Veto()
 
     def OnItemActivate(self, event):
         id = event.GetItem()
@@ -75,7 +76,8 @@ class ExplorerWindow(wx.TreeCtrl):
         self.SetItemText(self.rootid, self.GetDisplayName(self.rootdir))
 
     def OnRightUp(self, event):
-        self.PopupMenu(self.popup_menu)
+        print('hello')
+        #self.PopupMenu(self.popup_menu)
         event.Skip()
 
     def OnContextMenu(self, event):
