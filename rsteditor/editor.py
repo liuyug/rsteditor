@@ -63,7 +63,7 @@ class FindDialog(wx.Dialog):
         if id == ID_BUTTON_CLOSE:
             evt = FindCloseEvent(id=ID_BUTTON_CLOSE)
         elif id == ID_BUTTON_FIND:
-            evt = FindPrevEvent(id=ID_BUTTON_FIND)
+            evt = FindNextEvent(id=ID_BUTTON_FIND)
         else:
             return
         self.GetParent().GetEventHandler().ProcessEvent(evt)
@@ -129,7 +129,7 @@ class EditorWindow(wx.stc.StyledTextCtrl):
     def OnKeyUp(self, event):
         if self.char_count > 1 and event.GetKeyCode() == wx.WXK_RETURN:
             evt = ReqPreviewEvent(id=self.GetId())
-            wx.PostEvent(self.GetParent(), evt)
+            wx.PostEvent(self, evt)
             self.char_count = 0
         event.Skip()
 
@@ -137,7 +137,7 @@ class EditorWindow(wx.stc.StyledTextCtrl):
         self.char_count += 1
         if self.char_count > 5:
             evt = ReqPreviewEvent(id=self.GetId())
-            wx.PostEvent(self.GetParent(), evt)
+            wx.PostEvent(self, evt)
             self.char_count = 0
         event.Skip()
 
@@ -146,7 +146,7 @@ class EditorWindow(wx.stc.StyledTextCtrl):
         pos = event.GetPosition()
         if orien == wx.VERTICAL:
             evt = ScrollWinEvent(pos=pos, id=self.GetId())
-            wx.PostEvent(self.GetParent(), evt)
+            wx.PostEvent(self, evt)
         event.Skip()
 
     def GetValue(self):
@@ -164,6 +164,7 @@ class EditorWindow(wx.stc.StyledTextCtrl):
     def ShowFindWindow(self):
         """ only show find dialog """
         wx.FindWindowById(ID_SEARCH_TEXT, self.FindDlg).SetFocus()
+        self.FindDlg.Center()
         self.FindDlg.Show(True)
 
     def FindNext(self):

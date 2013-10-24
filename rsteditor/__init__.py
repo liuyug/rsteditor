@@ -31,16 +31,6 @@ ALLOWED_LOADS = ['.rst', '.rest',
 DATA_PATH = os.path.join('%s/share/%s'% (sys.prefix, APPNAME.lower()))
 
 try:
-    if wx.Platform == '__WXGTK__':
-        from rsteditor.webkit_gtk import WKHtmlWindow as HtmlViewer
-    elif wx.Platform == '__WXMSW__':
-        from wx.lib.iewin import IEHtmlWindow as HtmlViewer
-    elif wx.Platform == '__WXMAC__':
-        from wx.webkit import WebKitCtrl as HtmlViewer
-except:
-    from wx.html import HtmlWindow as HtmlViewer
-
-try:
     import configparser
 except:
     import ConfigParser as configparser

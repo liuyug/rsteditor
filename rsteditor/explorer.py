@@ -35,6 +35,7 @@ class ExplorerWindow(wx.TreeCtrl):
         self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
         self.Bind(wx.EVT_RIGHT_UP, self.OnRightUp)
         self.Bind(EVT_SET_ROOT, self.OnSetRoot)
+        self.rootid = wx.TreeItemId()
         self.rootdir = ''
         # popup menu
         self.popup_menu = wx.Menu()
@@ -69,11 +70,13 @@ class ExplorerWindow(wx.TreeCtrl):
                 self.SetRootDir(path)
             else:
                 evt = LoadFileEvent(filename=path, id=self.GetId())
-                wx.PostEvent(self.GetParent(), evt)
+                wx.PostEvent(self, evt)
         return
 
     def OnSize(self, event):
-        self.SetItemText(self.rootid, self.GetDisplayName(self.rootdir))
+        if self.rootid.IsOk():
+            self.SetItemText(self.rootid, self.GetDisplayName(self.rootdir))
+        return
 
     def OnRightDown(self, event):
         pt = event.GetPosition()

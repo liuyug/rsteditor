@@ -12,9 +12,9 @@ import wx.stc
 # for MacOS
 #import wx.webkit
 # for my python module
+from rsteditor import htmlviewer
 from rsteditor import utils
 from rsteditor import editor
-from rsteditor import htmlviewer
 from rsteditor import explorer
 from rsteditor.output import rst2html
 from rsteditor import APPNAME
@@ -129,7 +129,7 @@ class RSTEditorFrame(wx.Frame):
         # client window
         self.editor = editor.EditorWindow(self)
         self.explorer = explorer.ExplorerWindow(self)
-        self.htmlviewer = htmlviewer.WebViewer(self)
+        self.htmlviewer = htmlviewer.GetWebViewer(self)
         self.codeviewer = editor.CodeViewer(self)
         self.m_mgr.AddPane(self.explorer, wx.aui.AuiPaneInfo().
                            Name('explorer').Left().
@@ -191,7 +191,9 @@ class RSTEditorFrame(wx.Frame):
         info.Name = APPNAME
         info.Version = VERSION
         info.Copyright = '(C) 2013'
-        info.Description = APPNAME + ' is the editor for writing ReStructedText.'
+        desc = APPNAME + ' is the editor for writing ReStructedText.\n'
+        desc += 'wxWidgets %s'% wx.version()
+        info.Description = desc
         info.Developers = AUTHORS
         wx.AboutBox(info)
 
@@ -374,6 +376,7 @@ class RSTEditorFrame(wx.Frame):
             htmlviewer_range = self.htmlviewer.GetScrollRange(wx.VERTICAL)
             unit = htmlviewer_range / editor_range
             delay = False
+            print('htmlviewer', htmlviewer_range)
             evt = htmlviewer.ReqScrollEvent(dx=0, dy=dy*unit, delay=delay, id=self.htmlviewer.GetId())
             wx.PostEvent(self.htmlviewer, evt)
 
@@ -382,6 +385,7 @@ class RSTEditorFrame(wx.Frame):
         editor_range = self.editor.GetScrollRange(wx.VERTICAL)
         htmlviewer_range = self.htmlviewer.GetScrollRange(wx.VERTICAL)
         unit = htmlviewer_range / editor_range
+        print('htmlviewer', htmlviewer_range)
         if type in ['.rst', '.rest']:
             html = rst2html(text)
             url = 'file:///%s'% self.filename
