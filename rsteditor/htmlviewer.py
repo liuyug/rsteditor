@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import wx.html
 import wx.lib.newevent
 from rsteditor import HtmlViewer
 
@@ -17,17 +16,23 @@ class WebViewer(HtmlViewer):
         dx = event.dx
         dy = event.dy
         delay = event.delay
-        if isinstance(self, wx.html.HtmlWindow):
-            super(WebViewer, self).Scroll(dx, dy)
-        elif isinstance(self, wx.lib.iewin.IEHtmlWindow):
-            super(WebViewer, self).ScrollWindow(dx, dy)
-        else:
+        if wx.Platform == '__WXGTK__':
             super(WebViewer, self).ScrollWindow(dx, dy, delay)
+        elif wx.Platform == '__WXMSW__':
+            super(WebViewer, self).ScrollWindow(dx, dy)
+        elif wx.Platform == '__WXMAC__':
+            pass
+        else:
+            super(WebViewer, self).Scroll(dx, dy)
+        return
 
     def SetPage(self, html, url=None):
-        if isinstance(self, wx.html.HtmlWindow):
-            super(WebViewer, self).SetPage(html)
-        elif isinstance(self, wx.lib.iewin.IEHtmlWindow):
-            super(WebViewer, self).LoadString(html)
-        else:
+        if wx.Platform == '__WXGTK__':
             super(WebViewer, self).SetPage(html, url)
+        elif wx.Platform == '__WXMSW__':
+            super(WebViewer, self).LoadString(html)
+        elif wx.Platform == '__WXMAC__':
+            pass
+        else:
+            super(WebViewer, self).SetPage(html)
+        return

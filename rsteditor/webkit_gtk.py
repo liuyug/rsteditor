@@ -95,6 +95,8 @@ class WKHtmlWindow(wx.Window):
         self.ctrl.stop_loading()
 
     def SetPage(self, html, url):
+        if not url:
+            url = ''    # url must be str or unicode
         self.ctrl.load_string(html, 'text/html', 'utf-8', url)
 
     def DoScrollWindow(self, dx, dy):
