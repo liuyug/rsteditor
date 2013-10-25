@@ -9,6 +9,7 @@ import shutil
 import wx
 import wx.aui
 import wx.stc
+_ = wx.GetTranslation
 # for MacOS
 #import wx.webkit
 # for my python module
@@ -27,9 +28,13 @@ from rsteditor import TEMPLATE_PATH
 from rsteditor import CONFIG_FILE
 from rsteditor import FILENAME
 from rsteditor import ALLOWED_LOADS
-from rsteditor import config
-from rsteditor import _
 
+try:
+    import configparser
+except:
+    import ConfigParser as configparser
+
+config = configparser.ConfigParser()
 
 
 ID_RSTEDITOR_BASE = wx.ID_HIGHEST + 1

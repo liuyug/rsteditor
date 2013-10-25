@@ -4,10 +4,8 @@
 import sys
 import os.path
 
-from wx import GetTranslation as _
-
 APPNAME = 'RSTEditor'
-VERSION = '1.0.0a'
+VERSION = '1.0.0'
 AUTHORS =['Yugang LIU',]
 
 HOME_PATH = os.path.expanduser('~')
@@ -28,10 +26,4 @@ ALLOWED_LOADS = ['.rst', '.rest',
 
 DATA_PATH = os.path.join('%s/share/%s'% (sys.prefix, APPNAME.lower()))
 
-try:
-    import configparser
-except:
-    import ConfigParser as configparser
-
-config = configparser.ConfigParser()
 

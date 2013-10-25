@@ -8,7 +8,7 @@ import shutil
 import wx
 import wx.lib.newevent
 
-from rsteditor import _
+_ = wx.GetTranslation
 
 ID_BASE = wx.ID_HIGHEST + 1
 ID_NEW_DIRECTORY = ID_BASE + 1

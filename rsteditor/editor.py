@@ -4,14 +4,19 @@
 import os.path
 import keyword
 
+import wx
 import wx.stc
 import wx.lib.newevent
 
-from rsteditor import configparser
+_ = wx.GetTranslation
+
+try:
+    import configparser
+except:
+    import ConfigParser as configparser
+
 from rsteditor import CONFIG_PATH
 from rsteditor import STYLE_FILE
-from rsteditor import _
-
 
 ReqPreviewEvent, EVT_REQ_PREVIEW = wx.lib.newevent.NewCommandEvent()
 FindCloseEvent, EVT_FIND_CLOSE = wx.lib.newevent.NewCommandEvent()
