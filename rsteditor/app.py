@@ -191,8 +191,9 @@ class RSTEditorFrame(wx.Frame):
         info.Name = APPNAME
         info.Version = VERSION
         info.Copyright = '(C) 2013'
-        desc = APPNAME + ' is the editor for writing ReStructedText.\n'
-        desc += 'wxWidgets %s'% wx.version()
+        desc = """\n%s  is the editor for ReStructedText.\n
+wxWidgets %s
+        """% (APPNAME, wx.version())
         info.Description = desc
         info.Developers = AUTHORS
         wx.AboutBox(info)
