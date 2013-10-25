@@ -4,6 +4,10 @@
 import os
 from distutils.core import setup
 import distutils.command.install_scripts
+try:
+    import py2exe
+except:
+    pass
 
 from rsteditor import APPNAME
 from rsteditor import VERSION
@@ -42,6 +46,24 @@ setup(name=APPNAME.lower(),
       scripts=['rsteditor.py'],
       requires=['docutils', 'pygments', 'wxPython'],
       cmdclass = {"install_scripts": my_install},
+      # for py2exe
+      windows=['rsteditor.py'],
+      options={'py2exe':{
+          'skip_archive':True,
+          'dll_excludes':['msvcp90.dll'],
+          'includes':[
+              'wx.lib.iewin',
+              'pygments',
+              'ConfigParser',
+              'docutils',
+              ],
+          'excludes':[
+              'wx.webkit',
+              'wx.html2',
+              'pygtk', 'gtk', 'gobject',
+              'webkit',
+              ],
+          },}
       )
 
 
