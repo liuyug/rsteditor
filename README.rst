@@ -5,7 +5,7 @@ RSTEditor is a editor for ReStructedText. It support preview with html.
 
 Requirement
 ===========
-For all platform:
+Install them on all platform:
 
 + docutils
 + wxPython
@@ -13,9 +13,16 @@ For all platform:
 
 For Window:
 
+.. tip::
+
+    Do not support scroll synchronize on Window.
+
+Install it on Window:
+
 + comtypes
 
 For Linux:
+Install them:
 
 + pygtk
 + pywebkitgtk

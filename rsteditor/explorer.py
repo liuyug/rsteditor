@@ -76,7 +76,7 @@ class ExplorerWindow(wx.TreeCtrl):
     def OnSize(self, event):
         if self.rootid.IsOk():
             self.SetItemText(self.rootid, self.GetDisplayName(self.rootdir))
-        return
+        event.Skip()
 
     def OnRightDown(self, event):
         pt = event.GetPosition()
@@ -86,8 +86,6 @@ class ExplorerWindow(wx.TreeCtrl):
         return
 
     def OnRightUp(self, event):
-        pt = event.GetPosition()
-        item, flags = self.HitTest(pt)
         self.PopupMenu(self.popup_menu)
 
     def OnContextMenu(self, event):

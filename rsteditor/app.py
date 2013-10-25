@@ -331,7 +331,11 @@ class RSTEditorFrame(wx.Frame):
         elif evtId == ID_PREVIEW_ONINPUT:
             event.Check(config.getboolean('preview', 'oninput'))
         elif evtId == ID_PREVIEW_SCROLLSYNC:
-            event.Check(config.getboolean('preview', 'synchronize'))
+            if wx.Platform == '__WXMSW__':
+                event.Check(False)
+                event.Enable(False)
+            else:
+                event.Check(config.getboolean('preview', 'synchronize'))
         return
 
     def OnShowAuiPanel(self, event):
@@ -376,7 +380,6 @@ class RSTEditorFrame(wx.Frame):
             htmlviewer_range = self.htmlviewer.GetScrollRange(wx.VERTICAL)
             unit = htmlviewer_range / editor_range
             delay = False
-            print('htmlviewer', htmlviewer_range)
             evt = htmlviewer.ReqScrollEvent(dx=0, dy=dy*unit, delay=delay, id=self.htmlviewer.GetId())
             wx.PostEvent(self.htmlviewer, evt)
 
@@ -385,7 +388,6 @@ class RSTEditorFrame(wx.Frame):
         editor_range = self.editor.GetScrollRange(wx.VERTICAL)
         htmlviewer_range = self.htmlviewer.GetScrollRange(wx.VERTICAL)
         unit = htmlviewer_range / editor_range
-        print('htmlviewer', htmlviewer_range)
         if type in ['.rst', '.rest']:
             html = rst2html(text)
             url = 'file:///%s'% self.filename
@@ -434,7 +436,7 @@ def main():
         config.set('preview', 'onsave', 'no')
         config.set('preview', 'oninput', 'yes')
         config.set('preview', 'synchronize', 'yes')
-    app = wx.App()
+    app = wx.App(redirect=False)
     frame = RSTEditorFrame(None)
     frame.Show(True)
     app.MainLoop()

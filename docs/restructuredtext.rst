@@ -2995,13 +2995,3 @@ Markup errors are handled according to the specification in `PEP
 .. _RFC2732: http://www.rfc-editor.org/rfc/rfc2732.txt
 .. _Zope: http://www.zope.com/
 .. _PEP 258: ../../peps/pep-0258.html
-
-
-..
-   Local Variables:
-   mode: indented-text
-   indent-tabs-mode: nil
-   sentence-end-double-space: t
-   fill-column: 70
-   End:
-

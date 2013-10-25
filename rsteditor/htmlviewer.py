@@ -24,14 +24,18 @@ class WebViewer(HtmlViewer):
     def __init__(self, *args, **kwargs):
         super(WebViewer, self).__init__(*args, **kwargs)
         self.Bind(EVT_REQ_SCROLL, self.OnReqScroll)
+        self.Bind(wx.EVT_RIGHT_DOWN, self.OnIgnore)
+        self.Bind(wx.EVT_RIGHT_UP, self.OnIgnore)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.OnIgnore)
+
+    def OnIgnore(self, event):
+        pass
 
     def OnReqScroll(self, event):
         dx = event.dx
         dy = event.dy
         delay = event.delay
-        if wx.version().startswith('2.9'):
-            super(WebViewer, self).ScrollWindow(dx, dy)
-        elif wx.Platform == '__WXGTK__':
+        if wx.Platform == '__WXGTK__':
             super(WebViewer, self).ScrollWindow(dx, dy, delay)
         elif wx.Platform == '__WXMSW__':
             # iewin don't support scroll
@@ -44,9 +48,7 @@ class WebViewer(HtmlViewer):
         return
 
     def SetPage(self, html, url=None):
-        if wx.version().startswith('2.9'):
-            super(WebViewer, self).SetPage(html, url)
-        elif wx.Platform == '__WXGTK__':
+        if wx.Platform == '__WXGTK__':
             super(WebViewer, self).SetPage(html, url)
         elif wx.Platform == '__WXMSW__':
             super(WebViewer, self).LoadString(html)
@@ -60,10 +62,8 @@ class WebViewer(HtmlViewer):
 def GetWebViewer(*args, **kwargs):
     """ Create WebViewer """
     if wx.version().startswith('2.9'):
-        wv = HtmlViewer.New(*args, **kwargs)
-        print(wv)
-        return wv
+        # WebView class don't support subclass
+        return HtmlViewer.New(*args, **kwargs)
     else:
-        return
         return WebViewer(*args, **kwargs)
 

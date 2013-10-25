@@ -4,9 +4,7 @@
 import sys
 import os.path
 
-import wx
-
-_ = wx.GetTranslation
+from wx import GetTranslation as _
 
 APPNAME = 'RSTEditor'
 VERSION = '1.0.0a'
