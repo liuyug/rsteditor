@@ -123,8 +123,10 @@ class RSTEditorFrame(wx.Frame):
         self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUI, id=ID_PREVIEW_SCROLLSYNC)
         menuBar.Append(preview_menu, _('&Preview'))
         helpmenu = wx.Menu()
+        helpmenu.Append(wx.ID_HELP, _('&Help'))
         helpmenu.Append(wx.ID_ABOUT, _('&About'))
         self.Bind(wx.EVT_MENU, self.OnAbout, id=wx.ID_ABOUT)
+        self.Bind(wx.EVT_MENU, self.OnHelp, id=wx.ID_HELP)
         menuBar.Append(helpmenu, _('&Help'))
         self.SetMenuBar(menuBar)
 
@@ -183,13 +185,19 @@ class RSTEditorFrame(wx.Frame):
         self.Close(True)
 
     def OnClose(self, event):
-        self.NeedSaveFirstly()
-        aui_cfg = self.m_mgr.SavePerspective()
-        config.set('window', 'auiconfig', aui_cfg)
-        size = self.GetSize()
-        config.set('window', 'size', '%dx%d'% tuple(size))
-        config.set('main', 'path', self.explorer.rootdir)
+        help_path = os.path.join(DATA_PATH, 'docs')
+        if not self.explorer.rootdir == help_path:
+            self.NeedSaveFirstly()
+            aui_cfg = self.m_mgr.SavePerspective()
+            config.set('window', 'auiconfig', aui_cfg)
+            size = self.GetSize()
+            config.set('window', 'size', '%dx%d'% tuple(size))
+            config.set('main', 'path', self.explorer.rootdir)
         event.Skip()
+
+    def OnHelp(self, event):
+        help_path = os.path.join(DATA_PATH, 'docs')
+        self.explorer.SetRootDir(help_path)
 
     def OnAbout(self, event):
         info = wx.AboutDialogInfo()

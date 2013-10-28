@@ -2,6 +2,8 @@
 # -*- encoding:utf-8 -*-
 
 import os
+import glob
+
 from distutils.core import setup
 import distutils.command.install_scripts
 try:
@@ -42,6 +44,8 @@ setup(name=APPNAME.lower(),
               'MANIFEST.in',
               'test.py']),
           ('share/%s/config'% APPNAME.lower(), ['config/styles.ini']),
+          ('share/%s/docs'% APPNAME.lower(), glob.glob('docs/*.rst')),
+          ('share/%s/docs/images'% APPNAME.lower(), glob.glob('docs/images/*')),
           ],
       scripts=['rsteditor.py'],
       requires=['docutils', 'pygments', 'wxPython'],

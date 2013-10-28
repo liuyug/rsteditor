@@ -2,5 +2,6 @@ include *.rst
 include *.in
 include *.py
 include config/styles.ini
+include docs
 recursive-include test
 
