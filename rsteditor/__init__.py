@@ -5,7 +5,7 @@ import sys
 import os.path
 
 APPNAME = 'RSTEditor'
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 AUTHORS =['Yugang LIU',]
 
 HOME_PATH = os.path.expanduser('~')

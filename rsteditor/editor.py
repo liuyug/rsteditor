@@ -107,6 +107,7 @@ class EditorWindow(wx.stc.StyledTextCtrl):
         self.SetEdgeMode(wx.stc.STC_EDGE_LINE)
         self.SetEdgeColumn(78)
         self.SetWrapMode(1)
+        self.SetCodePage(65001)
         self.StyleClearAll()
         self.FindDlg = FindDialog(self, title=_('Find'))
         self.Bind(EVT_FIND_CLOSE, self.OnFind)
