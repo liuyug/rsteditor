@@ -3,7 +3,10 @@
 
 # for python library
 import os.path
+import sys
 import shutil
+from optparse import OptionParser
+import subprocess
 
 # for wxPython library
 import wx
@@ -166,7 +169,7 @@ class RSTEditorFrame(wx.Frame):
         path = config.get('main', 'path')
         if not os.path.exists(path):
             path = HOME_PATH
-        self.explorer.SetRootDir(path)
+        self.SetRoot(path)
         size = utils.strsize2intlist(config.get('window', 'size'), (800, 600))
         self.SetSize(size)
         self.Center()
@@ -196,15 +199,17 @@ class RSTEditorFrame(wx.Frame):
         event.Skip()
 
     def OnHelp(self, event):
-        help_path = os.path.join(DATA_PATH, 'docs')
-        self.explorer.SetRootDir(help_path)
+        help_path = os.path.join(DATA_PATH, 'docs', 'demo.rst')
+        subprocess.Popen([sys.argv[0], help_path])
 
     def OnAbout(self, event):
         info = wx.AboutDialogInfo()
         info.Name = APPNAME
         info.Version = VERSION
         info.Copyright = '(C) 2013'
-        desc = """\n%s  is the editor for ReStructedText.\n
+        desc = """
+%s is the editor for ReStructedText.
+
 wxWidgets %s
         """% (APPNAME, wx.version())
         info.Description = desc
@@ -364,21 +369,7 @@ wxWidgets %s
 
     def OnLoadFile(self, event):
         self.NeedSaveFirstly()
-        path = event.filename
-        ext = os.path.splitext(path)[1].lower()
-        if ext in ALLOWED_LOADS:
-            with open(path, 'r') as f:
-                text = f.read()
-            self.filename = path
-            self.UpdateTitle(self.filename)
-            self.statusbar.SetStatusText(_('Load %s')% self.filename, 0)
-            self.editor.SetValue(text)
-            self.editor.SetSavePoint()
-            self.editor.SetStyle(ext)
-            evt = explorer.SetRootEvent(id=self.GetId(), path=os.path.dirname(self.filename), refresh=False)
-            wx.PostEvent(self.explorer, evt)
-            self.PreviewRST(text, ext)
-        return
+        self.LoadFile(event.filename)
 
     def OnReqPreview(self, event):
         if config.getboolean('preview', 'oninput'):
@@ -431,6 +422,26 @@ wxWidgets %s
             return True
         return False
 
+    def SetRoot(self, root_path):
+        self.explorer.SetRootDir(root_path)
+
+    def LoadFile(self, file):
+        path = file
+        ext = os.path.splitext(path)[1].lower()
+        if ext in ALLOWED_LOADS:
+            with open(path, 'r') as f:
+                text = f.read()
+            self.filename = path
+            self.UpdateTitle(self.filename)
+            self.statusbar.SetStatusText(_('Load %s')% self.filename, 0)
+            self.editor.SetValue(text)
+            self.editor.SetSavePoint()
+            self.editor.SetStyle(ext)
+            evt = explorer.SetRootEvent(id=self.GetId(), path=os.path.dirname(self.filename), refresh=False)
+            wx.PostEvent(self.explorer, evt)
+            self.PreviewRST(text, ext)
+        return
+
 
 def main():
     if not os.path.exists(CONFIG_PATH):
@@ -450,8 +461,22 @@ def main():
         config.set('preview', 'onsave', 'no')
         config.set('preview', 'oninput', 'yes')
         config.set('preview', 'synchronize', 'yes')
+    usage = "usage: %prog [directory or file]"
+    parser = OptionParser(usage)
+    (options, args) = parser.parse_args()
+    if args:
+        path = os.path.realpath(args[0])
+    else:
+        path = None
     app = wx.App(redirect=False)
     frame = RSTEditorFrame(None)
+    if path:
+        if os.path.isdir(path):
+            frame.SetRoot(path)
+        elif os.path.exists(path):
+            root_path = os.path.dirname(path)
+            frame.SetRoot(root_path)
+            frame.LoadFile(path)
     frame.Show(True)
     app.MainLoop()
     with open(config_file, 'w') as f:
