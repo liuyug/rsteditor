@@ -4,7 +4,7 @@
 try:
     from docutils.core import publish_string
 except:
-    raise Exception('Please install docutilis firstly')
+    raise Exception('Please install docutils firstly')
 
 def rst2html(rst_text):
     try:
