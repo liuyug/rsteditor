@@ -3,6 +3,11 @@ RSTEditor
 =========
 RSTEditor is a editor for ReStructedText. It support preview with html.
 
+.. tip::
+
+    由于无法修复中文输入Bug，请使用本软件的QT版本，rsteditor-qt
+    
+    
 Requirement
 ===========
 Install them on all platform:
